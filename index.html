@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AND2BLE PRIVATE SNS</title>
+    <title>PRIVATE SPACE SNS</title>
     <style>
         body {
             font-family: 'Malgun Gothic', sans-serif;
             padding: 20px;
-            background-color: #0f172a; /* 시크하고 깊은 다크 블루 배경 */
+            background-color: #0f172a; /* 시크한 다크 블루 배경 유지 */
             color: #f8fafc;
             margin: 0;
         }
@@ -23,7 +23,7 @@
         }
         h1.logo {
             font-size: 26px;
-            color: #38bdf8; /* 화사한 스카이 블루 포인트 */
+            color: #38bdf8; 
             text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
             margin: 0;
         }
@@ -33,7 +33,7 @@
             margin-top: 5px;
         }
         .box {
-            background: #1e293b; /* 메인 콘텐츠 박스 */
+            background: #1e293b; 
             border: 1px solid #334155;
             padding: 25px;
             margin-bottom: 20px;
@@ -90,10 +90,8 @@
             margin-top: 6px;
         }
 
-        /* 💡 2번 인증 세션 숨김 대기 */
         #authSection { display: block; }
-
-        /* 💡 3번 SNS 피드 영역 (처음엔 숨김) */
+        
         #snsSection {
             display: none;
             animation: fadeIn 0.5s ease-in-out;
@@ -118,14 +116,12 @@
         }
         .logout-btn:hover { background: #e11d48; }
         
-        /* 피드 글쓰기 창 */
         .post-box textarea {
             resize: none;
             height: 80px;
             margin-bottom: 10px;
         }
         
-        /* 타임라인 게시글 스타일 */
         .feed-list {
             margin-top: 20px;
         }
@@ -137,11 +133,29 @@
             margin-bottom: 12px;
             animation: slideDown 0.3s ease-out;
         }
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
         .post-author {
             font-weight: bold;
             color: #38bdf8;
             font-size: 14px;
-            margin-bottom: 5px;
+        }
+        /* 💡 글 삭제 버튼 추가 */
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0;
+            width: auto;
+        }
+        .delete-btn:hover {
+            color: #f43f5e;
         }
         .post-content {
             font-size: 15px;
@@ -155,27 +169,23 @@
             text-align: right;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; } to { opacity: 1; }
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1 class="logo">AND2BLE PRIVATE SPACE</h1>
-        <div class="sub-text">우리 멤버들만 글을 쓰고 소통하는 비밀 피드</div>
+        <h1 class="logo">PRIVATE SPACE</h1>
+        <div class="sub-text">인증된 멤버들만 소통하는 시크릿 피드</div>
     </div>
 
     <div id="authSection">
         <div class="box">
             <h3>1. 회원가입 신청 (Formspree)</h3>
             <div data-fs-success style="color: #38bdf8; text-align:center; display:none; margin-bottom:15px; font-weight:bold;">
-                🎉 신청 완료! 관리자 메일 확인 후 회원등록을 진행합니다.
+                🎉 신청 완료! 관리자 확인 후 승인됩니다.
             </div>
             <form id="signupForm">
                 <div class="form-group">
@@ -185,14 +195,14 @@
                 <div class="form-group">
                     <label>비밀번호 설정</label>
                     <input type="password" name="user_code" data-fs-field placeholder="비밀번호 입력" required>
-                    <p class="note">⚠️ 스팸 우회 중! 진짜 비밀번호 사용 금지</p>
+                    <p class="note">⚠️ 스팸 우회 중! 실제 비밀번호 사용 금지</p>
                 </div>
                 <button type="submit" data-fs-submit-btn>가입 신청 제출하기</button>
             </form>
         </div>
 
         <div class="box">
-            <h3>2. 멤버 로그인</h3>
+            <h3>2. 로그인</h3>
             <form id="loginForm">
                 <div class="form-group">
                     <label>이메일 아이디</label>
@@ -209,40 +219,32 @@
 
     <div id="snsSection">
         <div class="welcome-msg">
-            <span>🟢 <strong id="currentUser">user</strong>님 전용 멤버 피드 인증됨</span>
+            <span>🟢 <strong id="currentUser">user</strong>님 피드</span>
             <button class="logout-btn" onclick="logout()">로그아웃</button>
         </div>
 
         <div class="box post-box">
-            <h3>📝 새로운 소식 남기기</h3>
+            <h3>📝 새로운 이야기 남기기</h3>
             <form id="postForm">
-                <textarea id="postInput" placeholder="오늘 앤더블 음방 교차편집 보셨나요? 멤버들에게 이야기를 전해보세요!" required></textarea>
+                <textarea id="postInput" placeholder="여기에 글을 작성해 보세요..." required></textarea>
                 <button type="submit">피드에 올리기</button>
             </form>
         </div>
 
-        <div id="feedContainer" class="feed-list">
-            </div>
+        <div id="feedContainer" class="feed-list"></div>
     </div>
-
 </div>
 
 <script>
-    // 💡 [회원 목록 및 로그인 정보 관리 데이터베이스]
     const USERS_DB = [
         { email: "3upoibe2@gmail.com", password: "1234567890" },
         { email: "admin@example.com", password: "adminpassword" }
     ];
 
-    // 현재 로그인된 유저 임시 저장
     let loggedInUser = "";
+    let posts = [];
 
-    // 임시 초기 타임라인 더미 데이터
-    let posts = [
-        { author: "admin@example.com", content: "앤더블 프라이빗 SNS 공간이 개설되었습니다! 가입하신 멤버분들은 자유롭게 피드를 채워주세요. 🥳", time: "2026.06.17 12:00" }
-    ];
-
-    // Formspree 가입 연동 (mwvjzjqp)
+    // Formspree 초기화
     window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
     formspree('initForm', { 
         formElement: '#signupForm', 
@@ -265,14 +267,13 @@
             loggedInUser = user.email;
             document.getElementById('currentUser').innerText = loggedInUser;
             
-            // 화면 전환
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('snsSection').style.display = 'block';
             
-            // 피드 그리기
-            renderFeed();
+            // 💡 로그인 성공 시 저장소에서 글 불러오기
+            loadPosts();
         } else {
-            alert("❌ 멤버 정보가 올바르지 않거나 아직 미승인 상태입니다.");
+            alert("❌ 멤버 정보가 올바르지 않습니다.");
         }
     });
 
@@ -284,17 +285,37 @@
         document.getElementById('loginForm').reset();
     }
 
-    // 피드 목록을 화면에 그리는 함수
+    // 💡 저장소에서 글 가져와서 화면에 뿌리기
+    function loadPosts() {
+        const savedPosts = localStorage.getItem('sns_posts');
+        if (savedPosts) {
+            posts = JSON.parse(savedPosts);
+        } else {
+            // 저장된 글이 없을 때만 보여줄 기본 웰컴 글
+            posts = [{ id: Date.now(), author: "admin@example.com", content: "우리들만의 비밀 SNS 공간이 개설되었습니다! 자유롭게 피드를 채워보세요. 🥳", time: "2026.06.17 12:00" }];
+        }
+        renderFeed();
+    }
+
+    // 피드 출력 함수
     function renderFeed() {
         const container = document.getElementById('feedContainer');
-        container.innerHTML = ""; // 기존 피드 리셋
+        container.innerHTML = "";
 
-        // 최신글이 위로 오도록 배열을 뒤집어서 뿌려줍니다.
+        // 최신 글이 위로 오게 역순 정렬
         [...posts].reverse().forEach(post => {
             const postEl = document.createElement('div');
             postEl.className = 'post';
+            
+            // 내가 쓴 글일 때만 삭제 버튼이 보이도록 분기 처리
+            const isMyPost = post.author === loggedInUser;
+            const deleteBtnHtml = isMyPost ? `<button class="delete-btn" onclick="deletePost(${post.id})">삭제</button>` : '';
+
             postEl.innerHTML = `
-                <div class="post-author">👤 ${post.author}</div>
+                <div class="post-header">
+                    <div class="post-author">👤 ${post.author}</div>
+                    ${deleteBtnHtml}
+                </div>
                 <div class="post-content">${post.content.replace(/\n/g, '<br>')}</div>
                 <div class="post-time">${post.time}</div>
             `;
@@ -308,21 +329,37 @@
         const content = document.getElementById('postInput').value.trim();
         if (!content) return;
 
-        // 현재 시간 구하기
         const now = new Date();
         const timeStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
-        // 새 게시글 데이터 배열에 저장
-        posts.push({
+        // 새 글 오브젝트 생성 (고유 id 부여)
+        const newPost = {
+            id: Date.now(),
             author: loggedInUser,
             content: content,
             time: timeStr
-        });
+        };
 
-        // 폼 초기화 및 피드 새로고침
+        posts.push(newPost);
+        
+        // 💡 로컬 스토리지에 저장 (새로고침 버그 차단!)
+        localStorage.setItem('sns_posts', JSON.stringify(posts));
+
         document.getElementById('postInput').value = "";
         renderFeed();
     });
+
+    // 💡 글 삭제 기능 추가
+    function deletePost(postId) {
+        if (!confirm("정말 이 글을 삭제하시겠습니까?")) return;
+        
+        // 해당 id의 글만 제외하고 남기기
+        posts = posts.filter(post => post.id !== postId);
+        
+        // 변경된 배열을 다시 로컬 스토리지에 덮어쓰기
+        localStorage.setItem('sns_posts', JSON.stringify(posts));
+        renderFeed();
+    }
 </script>
 
 <script src="https://unpkg.com/@formspree/ajax@1" defer></script>

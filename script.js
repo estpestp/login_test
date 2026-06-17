@@ -3,7 +3,7 @@
 const USERS_DB = [
     { email: "3upoibe2@gmail.com", password: "1234567890", nickname: "루루 - 오너" },
     { email: "admin@example.com", password: "adminpassword", nickname: "관리자" },
-    { email: "qwef@gmail.com", passworsd: "almz", nickname: "쏘쏘쏘쏠수있어!!!!!!!" }
+    { email: "testest@gmail.com", passworsd: "testtest", nickname: "쏘쏘쏘쏠수있어!!!!!!!" }
 ];
 
 let loggedInUser = null; // 로그인 성공 시 유저 객체 전체를 저장 ({email, password, nickname})

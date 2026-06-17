@@ -8,7 +8,7 @@
         body {
             font-family: 'Malgun Gothic', sans-serif;
             padding: 20px;
-            background-color: #0f172a; /* 시크한 다크 블루 배경 유지 */
+            background-color: #0f172a; 
             color: #f8fafc;
             margin: 0;
         }
@@ -57,7 +57,7 @@
             font-size: 13px;
             color: #94a3b8;
         }
-        input[type="email"], input[type="password"], textarea {
+        input[type="text"], input[type="email"], input[type="password"], textarea {
             width: 100%;
             padding: 12px;
             box-sizing: border-box;
@@ -144,7 +144,6 @@
             color: #38bdf8;
             font-size: 14px;
         }
-        /* 💡 글 삭제 버튼 추가 */
         .delete-btn {
             background: none;
             border: none;
@@ -189,13 +188,17 @@
             </div>
             <form id="signupForm">
                 <div class="form-group">
+                    <label>활동할 닉네임</label>
+                    <input type="text" name="nickname" data-fs-field placeholder="길동이" required>
+                </div>
+                <div class="form-group">
                     <label>사용할 이메일</label>
                     <input type="email" name="email" data-fs-field placeholder="example@email.com" required>
                 </div>
                 <div class="form-group">
                     <label>비밀번호 설정</label>
                     <input type="password" name="user_code" data-fs-field placeholder="비밀번호 입력" required>
-                    <p class="note">⚠️ 스팸 우회 중! 실제 비밀번호 사용 금지</p>
+                    <p class="note">⚠️ 개발자에게 비밀번호와 이메일이 갑니다. 진짜 이메일을 사용하세요.</p>
                 </div>
                 <button type="submit" data-fs-submit-btn>가입 신청 제출하기</button>
             </form>
@@ -235,133 +238,7 @@
     </div>
 </div>
 
-<script>
-    const USERS_DB = [
-        { email: "3upoibe2@gmail.com", password: "1234567890" },
-        { email: "admin@example.com", password: "adminpassword" }
-    ];
-
-    let loggedInUser = "";
-    let posts = [];
-
-    // Formspree 초기화
-    window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
-    formspree('initForm', { 
-        formElement: '#signupForm', 
-        formId: 'mwvjzjqp',
-        onSuccess: function() {
-            document.querySelector('[data-fs-success]').style.display = 'block';
-            document.getElementById('signupForm').reset();
-        }
-    });
-
-    // 로그인 기능
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const email = document.getElementById('loginEmail').value;
-        const pass = document.getElementById('loginPassword').value;
-
-        const user = USERS_DB.find(u => u.email === email && u.password === pass);
-
-        if (user) {
-            loggedInUser = user.email;
-            document.getElementById('currentUser').innerText = loggedInUser;
-            
-            document.getElementById('authSection').style.display = 'none';
-            document.getElementById('snsSection').style.display = 'block';
-            
-            // 💡 로그인 성공 시 저장소에서 글 불러오기
-            loadPosts();
-        } else {
-            alert("❌ 멤버 정보가 올바르지 않습니다.");
-        }
-    });
-
-    // 로그아웃 기능
-    function logout() {
-        loggedInUser = "";
-        document.getElementById('authSection').style.display = 'block';
-        document.getElementById('snsSection').style.display = 'none';
-        document.getElementById('loginForm').reset();
-    }
-
-    // 💡 저장소에서 글 가져와서 화면에 뿌리기
-    function loadPosts() {
-        const savedPosts = localStorage.getItem('sns_posts');
-        if (savedPosts) {
-            posts = JSON.parse(savedPosts);
-        } else {
-            // 저장된 글이 없을 때만 보여줄 기본 웰컴 글
-            posts = [{ id: Date.now(), author: "admin@example.com", content: "우리들만의 비밀 SNS 공간이 개설되었습니다! 자유롭게 피드를 채워보세요. 🥳", time: "2026.06.17 12:00" }];
-        }
-        renderFeed();
-    }
-
-    // 피드 출력 함수
-    function renderFeed() {
-        const container = document.getElementById('feedContainer');
-        container.innerHTML = "";
-
-        // 최신 글이 위로 오게 역순 정렬
-        [...posts].reverse().forEach(post => {
-            const postEl = document.createElement('div');
-            postEl.className = 'post';
-            
-            // 내가 쓴 글일 때만 삭제 버튼이 보이도록 분기 처리
-            const isMyPost = post.author === loggedInUser;
-            const deleteBtnHtml = isMyPost ? `<button class="delete-btn" onclick="deletePost(${post.id})">삭제</button>` : '';
-
-            postEl.innerHTML = `
-                <div class="post-header">
-                    <div class="post-author">👤 ${post.author}</div>
-                    ${deleteBtnHtml}
-                </div>
-                <div class="post-content">${post.content.replace(/\n/g, '<br>')}</div>
-                <div class="post-time">${post.time}</div>
-            `;
-            container.appendChild(postEl);
-        });
-    }
-
-    // 게시글 등록 기능
-    document.getElementById('postForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const content = document.getElementById('postInput').value.trim();
-        if (!content) return;
-
-        const now = new Date();
-        const timeStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-
-        // 새 글 오브젝트 생성 (고유 id 부여)
-        const newPost = {
-            id: Date.now(),
-            author: loggedInUser,
-            content: content,
-            time: timeStr
-        };
-
-        posts.push(newPost);
-        
-        // 💡 로컬 스토리지에 저장 (새로고침 버그 차단!)
-        localStorage.setItem('sns_posts', JSON.stringify(posts));
-
-        document.getElementById('postInput').value = "";
-        renderFeed();
-    });
-
-    // 💡 글 삭제 기능 추가
-    function deletePost(postId) {
-        if (!confirm("정말 이 글을 삭제하시겠습니까?")) return;
-        
-        // 해당 id의 글만 제외하고 남기기
-        posts = posts.filter(post => post.id !== postId);
-        
-        // 변경된 배열을 다시 로컬 스토리지에 덮어쓰기
-        localStorage.setItem('sns_posts', JSON.stringify(posts));
-        renderFeed();
-    }
-</script>
-
 <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+<script src="script.js" defer></script>
 </body>
 </html>

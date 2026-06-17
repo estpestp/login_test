@@ -2,7 +2,8 @@
 // 가입 신청서(Formspree)를 보고 승인해 줄 때 여기 배열에 이메일, 패스워드, 닉네임을 추가해 주시면 됩니다!
 const USERS_DB = [
     { email: "3upoibe2@gmail.com", password: "1234567890", nickname: "루루 - 오너" },
-    { email: "admin@example.com", password: "adminpassword", nickname: "관리자" }
+    { email: "admin@example.com", password: "adminpassword", nickname: "관리자" },
+    { email: "qwef@gmail.com", passworsd: "almz", nickname: "쏘쏘쏘쏠수있어!!!!!!!" }
 ];
 
 let loggedInUser = null; // 로그인 성공 시 유저 객체 전체를 저장 ({email, password, nickname})

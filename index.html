@@ -3,47 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AND2BLE (앤더블) 팬즈 로그인</title>
+    <title>AND2BLE PRIVATE SNS</title>
     <style>
         body {
             font-family: 'Malgun Gothic', sans-serif;
-            padding: 30px;
-            background-color: #0b0c10; /* 더 깊고 시크한 다크 블루블랙 배경 */
-            color: #ffffff;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .title-area {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        h2.title {
-            font-size: 28px;
-            letter-spacing: 2px;
-            color: #00e5ff; 
-            text-shadow: 0 0 15px rgba(0,229,255,0.6);
+            padding: 20px;
+            background-color: #0f172a; /* 시크하고 깊은 다크 블루 배경 */
+            color: #f8fafc;
             margin: 0;
         }
-        .sub-title {
-            color: #66fcf1;
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1.logo {
+            font-size: 26px;
+            color: #38bdf8; /* 화사한 스카이 블루 포인트 */
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+            margin: 0;
+        }
+        .sub-text {
+            color: #94a3b8;
             font-size: 13px;
             margin-top: 5px;
-            letter-spacing: 1px;
         }
         .box {
-            background: #1f2833; /* 고급스러운 네이비 그레이 톤 폼 박스 */
-            border: 1px solid #45f3ff22;
+            background: #1e293b; /* 메인 콘텐츠 박스 */
+            border: 1px solid #334155;
             padding: 25px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         h3 {
             margin-top: 0;
             color: #fff;
-            border-bottom: 2px solid #00e5ff;
+            border-bottom: 2px solid #38bdf8;
             padding-bottom: 8px;
             font-size: 18px;
         }
@@ -55,145 +55,144 @@
             margin-bottom: 6px;
             font-weight: bold;
             font-size: 13px;
-            color: #c5c6c7;
+            color: #94a3b8;
         }
-        input[type="email"], input[type="password"] {
+        input[type="email"], input[type="password"], textarea {
             width: 100%;
             padding: 12px;
             box-sizing: border-box;
-            border: 1px solid #45f3ff33;
-            background-color: #0b0c10;
+            border: 1px solid #334155;
+            background-color: #0f172a;
             color: #fff;
-            border-radius: 6px;
-            transition: all 0.3s;
+            border-radius: 8px;
         }
-        input[type="email"]:focus, input[type="password"]:focus {
+        input:focus, textarea:focus {
             outline: none;
-            border-color: #00e5ff;
-            box-shadow: 0 0 8px rgba(0,229,255,0.3);
+            border-color: #38bdf8;
         }
         button {
             width: 100%;
-            padding: 14px;
-            background-color: #00e5ff;
-            color: #0b0c10;
+            padding: 12px;
+            background-color: #38bdf8;
+            color: #0f172a;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 16px;
-            transition: background 0.2s;
+            font-size: 15px;
         }
         button:hover {
-            background-color: #66fcf1;
-        }
-        button:disabled {
-            background-color: #444;
-            color: #888;
-            cursor: not-allowed;
+            background-color: #7dd3fc;
         }
         .note {
             font-size: 12px;
-            color: #ff4d4d;
+            color: #f43f5e;
             margin-top: 6px;
-            font-weight: bold;
         }
 
-        /* 💡 갤러리 영역 스타일 */
-        #gallerySection {
-            display: none; /* ⭐ 기본값 숨김 */
-            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        /* 💡 2번 인증 세션 숨김 대기 */
+        #authSection { display: block; }
+
+        /* 💡 3번 SNS 피드 영역 (처음엔 숨김) */
+        #snsSection {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
         }
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            margin-top: 25px;
+        .welcome-msg {
+            background: #334155;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .photo-card {
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 12px;
-            overflow: hidden;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
+        .logout-btn {
+            background: #f43f5e;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            width: auto;
         }
-        .photo-card:hover {
-            transform: translateY(-8px);
-            border-color: #00e5ff;
-            box-shadow: 0 10px 25px rgba(0,229,255,0.2);
+        .logout-btn:hover { background: #e11d48; }
+        
+        /* 피드 글쓰기 창 */
+        .post-box textarea {
+            resize: none;
+            height: 80px;
+            margin-bottom: 10px;
         }
-        .img-container {
-            width: 100%;
-            height: 340px;
-            overflow: hidden;
-            background-color: #1f2833;
+        
+        /* 타임라인 게시글 스타일 */
+        .feed-list {
+            margin-top: 20px;
         }
-        .photo-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* 이미지가 잘리지 않고 정비율로 꽉 차게 조절 */
-            transition: transform 0.5s ease;
+        .post {
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            animation: slideDown 0.3s ease-out;
         }
-        .photo-card:hover img {
-            transform: scale(1.05); /* 마우스 올렸을 때 부드러운 확대 효과 */
-        }
-        .member-info {
-            padding: 15px 10px;
-            background: #111;
-        }
-        .member-name {
-            margin: 0;
-            font-size: 16px;
+        .post-author {
             font-weight: bold;
-            color: #ffffff;
-            letter-spacing: 0.5px;
+            color: #38bdf8;
+            font-size: 14px;
+            margin-bottom: 5px;
         }
-        .member-team {
-            margin: 4px 0 0 0;
+        .post-content {
+            font-size: 15px;
+            line-height: 1.5;
+            word-break: break-all;
+        }
+        .post-time {
             font-size: 11px;
-            color: #00e5ff;
-            text-transform: uppercase;
+            color: #64748b;
+            margin-top: 8px;
+            text-align: right;
         }
 
-        /* 애니메이션 */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="title-area">
-        <h2 class="title">AND2BLE OFFICIAL FAN SITE</h2>
-        <div class="sub-title">SEQUENCE 01 : CURIOSITY - 26SS COLLECTION</div>
+    <div class="header">
+        <h1 class="logo">AND2BLE PRIVATE SPACE</h1>
+        <div class="sub-text">우리 멤버들만 글을 쓰고 소통하는 비밀 피드</div>
     </div>
 
     <div id="authSection">
         <div class="box">
-            <h3>1. 회원가입 신청</h3>
-            <div data-fs-success style="color: #00e5ff; background: #0b0c10; padding:12px; border-radius:6px; margin-bottom:15px; text-align:center; display:none; border:1px solid #00e5ff;">
-                🎉 가입 신청이 전송되었습니다! 대시보드 반영 후 승인됩니다.
+            <h3>1. 회원가입 신청 (Formspree)</h3>
+            <div data-fs-success style="color: #38bdf8; text-align:center; display:none; margin-bottom:15px; font-weight:bold;">
+                🎉 신청 완료! 관리자 메일 확인 후 회원등록을 진행합니다.
             </div>
             <form id="signupForm">
                 <div class="form-group">
-                    <label>신청할 이메일 아이디</label>
+                    <label>사용할 이메일</label>
                     <input type="email" name="email" data-fs-field placeholder="example@email.com" required>
                 </div>
                 <div class="form-group">
                     <label>비밀번호 설정</label>
-                    <input type="password" name="user_code" data-fs-field placeholder="비밀번호를 입력하세요" required>
-                    <p class="note">⚠️ Formspree 스팸 필터 우회용 입력창입니다. 진짜 비밀번호 사용 금지!</p>
+                    <input type="password" name="user_code" data-fs-field placeholder="비밀번호 입력" required>
+                    <p class="note">⚠️ 스팸 우회 중! 진짜 비밀번호 사용 금지</p>
                 </div>
-                <button type="submit" data-fs-submit-btn>가입 신청서 제출</button>
+                <button type="submit" data-fs-submit-btn>가입 신청 제출하기</button>
             </form>
         </div>
 
         <div class="box">
-            <h3>2. 로그인</h3>
+            <h3>2. 멤버 로그인</h3>
             <form id="loginForm">
                 <div class="form-group">
                     <label>이메일 아이디</label>
@@ -203,75 +202,47 @@
                     <label>비밀번호</label>
                     <input type="password" id="loginPassword" placeholder="••••••••" required>
                 </div>
-                <button type="submit">로그인</button>
+                <button type="submit">공간 입장하기</button>
             </form>
         </div>
     </div>
 
-    <div id="gallerySection">
-        <div class="box">
-            <h3>📸 AND2BLE 데뷔 컬렉션 포토 북</h3>
-            
-            <div class="gallery-grid">
-                <div class="photo-card">
-                    <div class="img-container">
-                        <img src="https://drive.google.com/file/d/1oWrXh2lePcCDW5KVw5Rf9DhZFitaWUnR/view?usp=drivesdk" alt="장하오">
-                    </div>
-                    <div class="member-info">
-                        <p class="member-name">장하오 (ZHANG HAO)</p>
-                        <p class="member-team">AND2BLE MEMBER</p>
-                    </div>
-                </div>
-                <div class="photo-card">
-                    <div class="img-container">
-                        <img src="https://drive.google.com/file/d/15Ka6oE6QAT0O16ZEWN3VfD841736rKH9/view?usp=drivesdk" alt="유승언">
-                    </div>
-                    <div class="member-info">
-                        <p class="member-name">유승언 (YOO SEUNG EON)</p>
-                        <p class="member-team">AND2BLE MEMBER</p>
-                    </div>
-                </div>
-                <div class="photo-card">
-                    <div class="img-container">
-                        <img src="https://drive.google.com/file/d/1YcTOEVaF59UNlO5k5bd0kZKb3hVbsK0p/view?usp=drivesdk" alt="리키">
-                    </div>
-                    <div class="member-info">
-                        <p class="member-name">리키 (RICKY)</p>
-                        <p class="member-team">AND2BLE MEMBER</p>
-                    </div>
-                </div>
-                <div class="photo-card">
-                    <div class="img-container">
-                        <img src="https://drive.google.com/file/d/1ziznPa3HmAWUg7G-XUa0zRaplZRuTcIJ/view?usp=drivesdk" alt="김규빈">
-                    </div>
-                    <div class="member-info">
-                        <p class="member-name">김규빈 (KIM GYU VIN)</p>
-                        <p class="member-team">AND2BLE MEMBER</p>
-                    </div>
-                </div>
-                <div class="photo-card">
-                    <div class="img-container">
-                        <img src="https://drive.google.com/file/d/10wvlWFhsFcXDcIg4ro23lXDfp8km-2f-/view?usp=drivesdk" alt="한유진">
-                    </div>
-                    <div class="member-info">
-                        <p class="member-name">한유진 (HAN YU JIN)</p>
-                        <p class="member-team">AND2BLE MEMBER</p>
-                    </div>
-                </div>
-            </div>
+    <div id="snsSection">
+        <div class="welcome-msg">
+            <span>🟢 <strong id="currentUser">user</strong>님 전용 멤버 피드 인증됨</span>
+            <button class="logout-btn" onclick="logout()">로그아웃</button>
         </div>
+
+        <div class="box post-box">
+            <h3>📝 새로운 소식 남기기</h3>
+            <form id="postForm">
+                <textarea id="postInput" placeholder="오늘 앤더블 음방 교차편집 보셨나요? 멤버들에게 이야기를 전해보세요!" required></textarea>
+                <button type="submit">피드에 올리기</button>
+            </form>
+        </div>
+
+        <div id="feedContainer" class="feed-list">
+            </div>
     </div>
 
 </div>
 
 <script>
-    // 회원 정보 DB 데이터
+    // 💡 [회원 목록 및 로그인 정보 관리 데이터베이스]
     const USERS_DB = [
         { email: "3upoibe2@gmail.com", password: "1234567890" },
         { email: "admin@example.com", password: "adminpassword" }
     ];
 
-    // Formspree 고유 ID mwvjzjqp 초기화 연동
+    // 현재 로그인된 유저 임시 저장
+    let loggedInUser = "";
+
+    // 임시 초기 타임라인 더미 데이터
+    let posts = [
+        { author: "admin@example.com", content: "앤더블 프라이빗 SNS 공간이 개설되었습니다! 가입하신 멤버분들은 자유롭게 피드를 채워주세요. 🥳", time: "2026.06.17 12:00" }
+    ];
+
+    // Formspree 가입 연동 (mwvjzjqp)
     window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
     formspree('initForm', { 
         formElement: '#signupForm', 
@@ -282,22 +253,75 @@
         }
     });
 
-    // 로그인 이벤트 검증 및 갤러리 엑세스
+    // 로그인 기능
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const pass = document.getElementById('loginPassword').value;
 
-        const inputEmail = document.getElementById('loginEmail').value;
-        const inputPassword = document.getElementById('loginPassword').value;
-
-        const user = USERS_DB.find(u => u.email === inputEmail && u.password === inputPassword);
+        const user = USERS_DB.find(u => u.email === email && u.password === pass);
 
         if (user) {
-            alert(`🎉 앤더블 오피셜 팬 존에 접속하셨습니다!`);
+            loggedInUser = user.email;
+            document.getElementById('currentUser').innerText = loggedInUser;
+            
+            // 화면 전환
             document.getElementById('authSection').style.display = 'none';
-            document.getElementById('gallerySection').style.display = 'block';
+            document.getElementById('snsSection').style.display = 'block';
+            
+            // 피드 그리기
+            renderFeed();
         } else {
-            alert("❌ 권한이 없거나 비밀번호가 올바르지 않습니다.");
+            alert("❌ 멤버 정보가 올바르지 않거나 아직 미승인 상태입니다.");
         }
+    });
+
+    // 로그아웃 기능
+    function logout() {
+        loggedInUser = "";
+        document.getElementById('authSection').style.display = 'block';
+        document.getElementById('snsSection').style.display = 'none';
+        document.getElementById('loginForm').reset();
+    }
+
+    // 피드 목록을 화면에 그리는 함수
+    function renderFeed() {
+        const container = document.getElementById('feedContainer');
+        container.innerHTML = ""; // 기존 피드 리셋
+
+        // 최신글이 위로 오도록 배열을 뒤집어서 뿌려줍니다.
+        [...posts].reverse().forEach(post => {
+            const postEl = document.createElement('div');
+            postEl.className = 'post';
+            postEl.innerHTML = `
+                <div class="post-author">👤 ${post.author}</div>
+                <div class="post-content">${post.content.replace(/\n/g, '<br>')}</div>
+                <div class="post-time">${post.time}</div>
+            `;
+            container.appendChild(postEl);
+        });
+    }
+
+    // 게시글 등록 기능
+    document.getElementById('postForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const content = document.getElementById('postInput').value.trim();
+        if (!content) return;
+
+        // 현재 시간 구하기
+        const now = new Date();
+        const timeStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+        // 새 게시글 데이터 배열에 저장
+        posts.push({
+            author: loggedInUser,
+            content: content,
+            time: timeStr
+        });
+
+        // 폼 초기화 및 피드 새로고침
+        document.getElementById('postInput').value = "";
+        renderFeed();
     });
 </script>
 

@@ -215,7 +215,7 @@
             <div class="gallery-grid">
                 <div class="photo-card">
                     <div class="img-container">
-                        <img src="https://i.ibb.co/6ndVfS4/hao.png" alt="장하오">
+                        <img src="https://docs.google.com/uc?export=download&id=1oWrXh2lePcCDW5KVw5Rf9DhZFitaWUnR" alt="장하오">
                     </div>
                     <div class="member-info">
                         <p class="member-name">장하오 (ZHANG HAO)</p>
@@ -224,7 +224,7 @@
                 </div>
                 <div class="photo-card">
                     <div class="img-container">
-                        <img src="https://i.ibb.co/N2z0P9r/seungeon.png" alt="유승언">
+                        <img src="" alt="유승언">
                     </div>
                     <div class="member-info">
                         <p class="member-name">유승언 (YOO SEUNG EON)</p>
@@ -233,7 +233,7 @@
                 </div>
                 <div class="photo-card">
                     <div class="img-container">
-                        <img src="https://i.ibb.co/3sScCj7/ricky.png" alt="리키">
+                        <img src="" alt="리키">
                     </div>
                     <div class="member-info">
                         <p class="member-name">리키 (RICKY)</p>
@@ -242,7 +242,7 @@
                 </div>
                 <div class="photo-card">
                     <div class="img-container">
-                        <img src="https://i.ibb.co/8mbyL0X/gyuvin.png" alt="김규빈">
+                        <img src="" alt="김규빈">
                     </div>
                     <div class="member-info">
                         <p class="member-name">김규빈 (KIM GYU VIN)</p>
@@ -251,7 +251,7 @@
                 </div>
                 <div class="photo-card">
                     <div class="img-container">
-                        <img src="https://i.ibb.co/s3YjGkR/yujin.png" alt="한유진">
+                        <img src="" alt="한유진">
                     </div>
                     <div class="member-info">
                         <p class="member-name">한유진 (HAN YU JIN)</p>
@@ -265,13 +265,11 @@
 </div>
 
 <script>
-    // 💡 아까 테스트에 성공하셨던 유저 데이터를 베이스로 둡니다.
     const USERS_DB = [
         { email: "3upoibe2@gmail.com", password: "1234567890" },
         { email: "admin@example.com", password: "adminpassword" }
     ];
 
-    // Formspree AJAX 초기화 (사용자님의 고유 폼 ID인 mwvjzjqp 연동)
     window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
     formspree('initForm', { 
         formElement: '#signupForm', 
@@ -282,7 +280,6 @@
         }
     });
 
-    // 로그인 인증 처리
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -293,7 +290,6 @@
 
         if (user) {
             alert(`🎉 앤더블 오피셜 팬 존에 접속하셨습니다!`);
-            // 로그인 화면 감추고 갤러리 활성화
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('gallerySection').style.display = 'block';
         } else {

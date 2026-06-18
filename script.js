@@ -1,12 +1,10 @@
-// 💡 회원 목록 및 닉네임 맵핑 데이터베이스
-// 가입 신청서(Formspree)를 보고 승인해 줄 때 여기 배열에 이메일, 패스워드, 닉네임을 추가해 주시면 됩니다!
+// 유저 데이터베이스 (승인된 멤버 추가 구역)
 const USERS_DB = [
-    { email: "3upoibe2@gmail.com", password: "1234567890", nickname: "루루 - 오너" },
-    { email: "admin@example.com", password: "adminpassword", nickname: "관리자" },
-    { email: "testest@gmail.com", passworsd: "testtest", nickname: "쏘쏘쏘쏠수있어!!!!!!!" }
+    { email: "3upoibe2@gmail.com", password: "1234567890", nickname: "테스터" },
+    { email: "admin@example.com", password: "adminpassword", nickname: "관리자" }
 ];
 
-let loggedInUser = null; // 로그인 성공 시 유저 객체 전체를 저장 ({email, password, nickname})
+let loggedInUser = null; 
 let posts = [];
 
 // Formspree 초기화
@@ -26,12 +24,11 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     const email = document.getElementById('loginEmail').value;
     const pass = document.getElementById('loginPassword').value;
 
-    // 일치하는 유저 찾기
     const user = USERS_DB.find(u => u.email === email && u.password === pass);
 
     if (user) {
-        loggedInUser = user; // 로그인된 유저 정보 보관
-        document.getElementById('currentUser').innerText = loggedInUser.nickname; // 닉네임 표시
+        loggedInUser = user; 
+        document.getElementById('currentUser').innerText = loggedInUser.nickname; 
         
         document.getElementById('authSection').style.display = 'none';
         document.getElementById('snsSection').style.display = 'block';
@@ -50,18 +47,18 @@ function logout() {
     document.getElementById('loginForm').reset();
 }
 
-// 로컬 스토리지에서 글 가져오기
+// 로컬 스토리지 데이터 로드
 function loadPosts() {
     const savedPosts = localStorage.getItem('sns_posts');
     if (savedPosts) {
         posts = JSON.parse(savedPosts);
     } else {
-        posts = [{ id: Date.now(), authorNickname: "관리자", authorEmail: "admin@example.com", content: "우리들만의 비밀 SNS 공간이 개설되었습니다! 자유롭게 피드를 채워보세요. 🥳", time: "2026.06.17 12:00" }];
+        posts = [{ id: Date.now(), authorNickname: "관리자", authorEmail: "admin@example.com", content: "우리들만의 비밀 SNS 공간이 개설되었습니다! 사진 파일도 자유롭게 첨부해서 피드를 꾸며보세요. 🥳", image: "", time: "2026.06.18 12:00" }];
     }
     renderFeed();
 }
 
-// 피드 출력 함수
+// 피드 화면 출력
 function renderFeed() {
     const container = document.getElementById('feedContainer');
     container.innerHTML = "";
@@ -70,9 +67,11 @@ function renderFeed() {
         const postEl = document.createElement('div');
         postEl.className = 'post';
         
-        // 이메일 기준으로 내가 쓴 글인지 판별하여 삭제 버튼 활성화
         const isMyPost = post.authorEmail === loggedInUser.email;
         const deleteBtnHtml = isMyPost ? `<button class="delete-btn" onclick="deletePost(${post.id})">삭제</button>` : '';
+
+        // 💡 사진 데이터가 있을 때만 <img> 태그를 동적으로 생성하는 로직
+        const imgHtml = post.image ? `<img src="${post.image}" class="post-image" alt="첨부 이미지">` : '';
 
         postEl.innerHTML = `
             <div class="post-header">
@@ -80,37 +79,65 @@ function renderFeed() {
                 ${deleteBtnHtml}
             </div>
             <div class="post-content">${post.content.replace(/\n/g, '<br>')}</div>
+            ${imgHtml}
             <div class="post-time">${post.time}</div>
         `;
         container.appendChild(postEl);
     });
 }
 
-// 게시글 등록 기능
+// 게시글 등록 (사진 인코딩 처리 포함)
 document.getElementById('postForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const content = document.getElementById('postInput').value.trim();
+    const imageFile = document.getElementById('postImageInput').files[0];
     if (!content) return;
 
     const now = new Date();
     const timeStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
+    // 💡 사진 파일이 첨부되었을 때와 아닐 때를 분기해서 처리하는 함수 호출
+    if (imageFile) {
+        const reader = new FileReader();
+        reader.onloadend = function() {
+            // 파일을 Base64 데이터 주소로 변환하여 브라우저 저장소에 직접 저장 가능한 형태로 만듦
+            savePostData(content, reader.result, timeStr);
+        };
+        reader.readAsDataURL(imageFile);
+    } else {
+        savePostData(content, "", timeStr);
+    }
+});
+
+// 게시글 실제 데이터를 배열과 스토리지에 Push하는 공통 로직 함수
+function savePostData(content, imageData, timeStr) {
     const newPost = {
         id: Date.now(),
-        authorNickname: loggedInUser.nickname, // 💡 작성자 닉네임 저장
-        authorEmail: loggedInUser.email,       // 삭제 검증용 이메일 저장
+        authorNickname: loggedInUser.nickname, 
+        authorEmail: loggedInUser.email,       
         content: content,
+        image: imageData, // 💡 변환된 이미지 데이터 바인딩
         time: timeStr
     };
 
     posts.push(newPost);
-    localStorage.setItem('sns_posts', JSON.stringify(posts));
+    
+    try {
+        localStorage.setItem('sns_posts', JSON.stringify(posts));
+    } catch (error) {
+        // 로컬스토리지는 브라우저당 약 5MB 용량 제한이 있으므로, 너무 큰 고용량 사진 연속 업로드 시 예외 처리
+        alert("⚠️ 브라우저 저장 공간이 가득 찼거나 사진 용량이 너무 큽니다. 조금 더 작은 사이즈의 사진을 이용해 주세요!");
+        posts.pop();
+        return;
+    }
 
+    // 폼 초기화
     document.getElementById('postInput').value = "";
+    document.getElementById('postImageInput').value = ""; // 파일 인풋 리셋
     renderFeed();
-});
+}
 
-// 글 삭제 기능
+// 글 삭제
 function deletePost(postId) {
     if (!confirm("정말 이 글을 삭제하시겠습니까?")) return;
     
